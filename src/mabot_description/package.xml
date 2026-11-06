@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+
+<package format="3">
+
+  <name>mabot_description</name>
+  <version>0.1.0</version>
+
+  <description>
+    ROS 2 robot description and Gazebo simulation package for mabot.
+  </description>
+
+  <maintainer email="muhammad.abdelmoniem4@gmail.com">
+    Mohamed Abdelmoniem men3m-4
+  </maintainer>
+
+  <license>Apache-2.0</license>
+
+
+  <!-- Build system -->
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+
+  <!-- Launch system -->
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+
+
+  <!-- Robot description -->
+
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+
+
+  <!-- Visualization -->
+
+  <exec_depend>rviz2</exec_depend>
+
+
+  <!-- Gazebo Sim integration -->
+
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
+  <exec_depend>warehouse_world</exec_depend>
+
+
+  <!-- ROS 2 message packages used by the Gazebo bridge -->
+
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>rosgraph_msgs</exec_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+
+
+  <!-- ROS 2 control -->
+
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>ros2_control</exec_depend>
+  <exec_depend>ros2_controllers</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>forward_command_controller</exec_depend>
+  <exec_depend>hardware_interface</exec_depend>
+
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>

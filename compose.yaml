@@ -1,0 +1,86 @@
+x-mabot-common: &mabot-common
+  image: mabot:jazzy
+  build:
+    context: .
+    dockerfile: docker/Dockerfile
+  init: true
+  network_mode: host
+  environment: &ros-environment
+    ROS_DOMAIN_ID: "${ROS_DOMAIN_ID:-42}"
+    ROS_LOCALHOST_ONLY: "0"
+  volumes:
+    - mabot_data:/data
+  working_dir: /opt/mabot_ws
+
+services:
+  shell:
+    <<: *mabot-common
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+  gazebo:
+    <<: *mabot-common
+    profiles: ["sim"]
+    command: ["ros2", "launch", "mabot_description", "warehouse.launch.py"]
+
+  gazebo-gui:
+    <<: *mabot-common
+    profiles: ["gui"]
+    environment:
+      <<: *ros-environment
+      DISPLAY: "${DISPLAY:-:0}"
+      XAUTHORITY: /tmp/.Xauthority
+      QT_X11_NO_MITSHM: "1"
+    volumes:
+      - mabot_data:/data
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+      - type: bind
+        source: ${XAUTHORITY:-${HOME}/.Xauthority}
+        target: /tmp/.Xauthority
+        read_only: true
+        bind:
+          create_host_path: false
+    command:
+      ["ros2", "launch", "mabot_description", "warehouse.launch.py", "use_gazebo_gui:=true"]
+
+  rviz:
+    <<: *mabot-common
+    profiles: ["gui"]
+    environment:
+      <<: *ros-environment
+      DISPLAY: "${DISPLAY:-:0}"
+      XAUTHORITY: /tmp/.Xauthority
+      QT_X11_NO_MITSHM: "1"
+    volumes:
+      - mabot_data:/data
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+      - type: bind
+        source: ${XAUTHORITY:-${HOME}/.Xauthority}
+        target: /tmp/.Xauthority
+        read_only: true
+        bind:
+          create_host_path: false
+    command:
+      ["ros2", "run", "rviz2", "rviz2", "-d", "/opt/mabot_ws/src/mabot_navigation/rviz/navigation.rviz", "--ros-args", "-p", "use_sim_time:=true"]
+
+  nvidia:
+    <<: *mabot-common
+    profiles: ["nvidia"]
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  mabot_data:

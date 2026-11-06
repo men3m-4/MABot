@@ -1,0 +1,39 @@
+# ROS 2 and colcon build outputs
+/build/
+/install/
+/log/
+**/build/
+**/install/
+**/log/
+
+# Python and test caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Gazebo local state and generated logs
+.gazebo/
+.gazebo_gui/
+*.log
+
+# Docker local overrides and environment secrets
+.env
+.env.*
+!.env.example
+docker-compose.override.yaml
+
+# Credentials and private keys
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Editors and operating-system temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
