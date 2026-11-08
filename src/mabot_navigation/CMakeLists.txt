@@ -8,12 +8,13 @@ endif()
 # Build system
 find_package(ament_cmake REQUIRED)
 
-# Install configuration, launch files, maps, and RViz settings
+# Install configuration, launch files, and RViz settings.
+# The map assets are kept in mabot_localization/map and mabot_slam/map,
+# which are the actual ETGAH source locations.
 install(
   DIRECTORY
     config
     launch
-    maps
     rviz
   DESTINATION share/${PROJECT_NAME}
   PATTERN "__pycache__" EXCLUDE
