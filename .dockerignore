@@ -1,9 +1,0 @@
-.git
-.vscode
-build
-install
-log
-data
-**/__pycache__/
-*.py[cod]
-*.log

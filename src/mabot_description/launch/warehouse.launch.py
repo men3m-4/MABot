@@ -36,6 +36,11 @@ def generate_launch_description():
         mabot_share, 'config', 'gz_bridge.yaml'
     )
 
+    # مسار ملف إعدادات RViz لو متوفر في الباكدج
+    rviz_config_file = os.path.join(
+        mabot_share, 'rviz', 'mabot.rviz'
+    )
+
     # Preserve existing resource paths.
     resource_paths = [
         os.path.join(warehouse_share, 'worlds'),
@@ -56,10 +61,17 @@ def generate_launch_description():
     enable_camera = LaunchConfiguration('enable_camera')
 
     launch_arguments = [
+        # تم تعديل القيمة الافتراضية هنا لتكون true لتشغيل واجهة جازيبو مباشرة
         DeclareLaunchArgument(
             'use_gazebo_gui',
-            default_value='false',
-            description='Enable the local Gazebo GUI outside ETGAH.',
+            default_value='true',
+            description='Enable the local Gazebo GUI.',
+        ),
+        # خيار تشغيل RViz مع جعله true افتراضياً
+        DeclareLaunchArgument(
+            'use_rviz',
+            default_value='true',
+            description='Launch RViz2 automatically.',
         ),
         DeclareLaunchArgument(
             'enable_camera',
@@ -163,6 +175,19 @@ def generate_launch_description():
         condition=IfCondition(enable_camera),
     )
 
+    # عقدة تشغيل RViz2 تلقائياً
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file] if os.path.exists(rviz_config_file) else [],
+        parameters=[{
+            'use_sim_time': True,
+        }],
+        condition=IfCondition(LaunchConfiguration('use_rviz')),
+    )
+
     return LaunchDescription([
         *launch_arguments,
         resource_path,
@@ -172,4 +197,5 @@ def generate_launch_description():
         spawn_robot,
         bridge,
         camera_image_bridge,
+        rviz_node,
     ])

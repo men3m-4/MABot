@@ -90,8 +90,8 @@
           <horizontal_fov>1.92</horizontal_fov>
 
           <image>
-            <width>160</width>
-            <height>120</height>
+            <width>1280</width>
+            <height>720</height>
             <format>R8G8B8</format>
           </image>
 

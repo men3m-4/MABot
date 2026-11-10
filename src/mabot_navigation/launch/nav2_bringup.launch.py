@@ -1,6 +1,3 @@
-# Copyright 2026 Mohamed Abdelmoniem
-# SPDX-License-Identifier: Apache-2.0
-
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
